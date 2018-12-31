@@ -115,6 +115,7 @@ def flash(sb):
       #piece has moved
       piece = board.piece_at(mv_to)
     flash_colour = ColMap[piece.symbol()]
+    show_moves(sb, piece, mv_from)
   sb[fy, fx] = flash_colour
   hat.screen.array = sb
   sleep(0.1)
@@ -129,6 +130,21 @@ def flash(sb):
   
   in_flash = False
 
+
+def show_moves(sb, piece, square):
+  # shade green all the positions for this piece from this square
+  squares = []
+  for m in board.legal_moves:
+    if m.from_square == square:
+      squares.append(m.to_square)
+  print('squares={}'.format(squares))
+  for s in squares:
+    sr = int((s-1) / 8)
+    sx = (s-1) - int(s/8)*8+1
+    sy = 7-sr
+    print('s={} sy={} sx={}'.format(s, sy, sx))
+    print('sb at sy,sx={}'.format(sb[sy, sx]))
+    sb[sy, sx] = Color.from_rgb(sb[sy, sx][0], 0.3, sb[sy, sx][2])
 
 mm_clip = lambda x, l, u: max(l, min(u, x))
 
